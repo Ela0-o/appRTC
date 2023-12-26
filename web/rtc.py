@@ -25,27 +25,35 @@ def main():
     lin = LinearFunk()
     par = Parabola()
 
+    st.session_state.active_button = st.session_state.get("active_button", None)  # Retrieve the active button from session state
+
     with buttons_column:
-        linear_button = st.button("Линейная функция")
-        parabola_button = st.button("Парабола")
-        default_button = st.button("Сброс")
-    if linear_button:
-        with params_column:
+        linear_button = st.button("Линейная функция", key="linear_button")
+        parabola_button = st.button("Парабола", key="parabola_button")
+        default_button = st.button("Сброс", key="default_button")
+    
+    if linear_button and (st.session_state.active_button != "linear"):
+        st.session_state.active_button = "linear"
+
+    if parabola_button and (st.session_state.active_button != "parabola"):
+        st.session_state.active_button = "parabola"
+
+    if default_button:
+        st.session_state.active_button = None  # Reset active button
+
+        # linear_a, linear_b = lin.default()
+
+    with params_column:
+        if st.session_state.active_button == "linear":
             linear_a = st.number_input("Введите значение a для линейной функции", value=2.0)
             linear_b = st.number_input("Введите значение b для линейной функции", value=1.0)
-            if default_button:
-                linear_a, linear_b = lin.default()
             lin.params = [linear_a, linear_b] 
-
-    if parabola_button:
-            with params_column:
-                parabola_a = st.number_input("Введите значение a для параболы", value=2.0)
-                parabola_b = st.number_input("Введите значение b для параболы", value=1.0)
-                parabola_c = st.number_input("Введите значение c для параболы", value=1.0)
-                if default_button:
-                    parabola_a, parabola_b, parabola_c = par.default()
-                par.params = [parabola_a, parabola_b,parabola_c] 
-        
+        if st.session_state.active_button == "parabola":
+            parabola_a = st.number_input("Введите значение a для параболы", value=2.0)
+            parabola_b = st.number_input("Введите значение b для параболы", value=1.0)
+            parabola_c = st.number_input("Введите значение c для параболы", value=1.0)
+            par.params = [parabola_a, parabola_b,parabola_c] 
+    
 
     with plot_column:
         st.subheader("Линейная функция")
