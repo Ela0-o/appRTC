@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 class LinearFunk:
 
     def __init__(self):
-        self.__name = "Линейная функция"
+        # self.__name = "Линейная функция"
         self.__a = 1
         self.__b = 0
 
@@ -42,7 +42,7 @@ class LinearFunk:
 class Parabola:
 
     def __init__(self):
-        self.__name = "Парабола"
+        # self.__name = "Парабола"
         self.__a = 1
         self.__b = 0
         self.__c = 0

@@ -17,6 +17,7 @@ def plot_parabola(ax, par):
     y = par.calc_p(x)
     ax.plot(x, y, label=f'Parabola: y = {a}x^2 + {b}x + {c}')
 
+
 # Основная часть приложения
 def main():
     # Определение колонок для размещения элементов
@@ -31,7 +32,7 @@ def main():
         linear_button = st.button("Линейная функция", key="linear_button")
         parabola_button = st.button("Парабола", key="parabola_button")
         default_button = st.button("Сброс", key="default_button")
-    
+       
     if linear_button and (st.session_state.active_button != "linear"):
         st.session_state.active_button = "linear"
 
@@ -40,20 +41,27 @@ def main():
 
     if default_button:
         st.session_state.active_button = None  # Reset active button
-
-        # linear_a, linear_b = lin.default()
+        linear_a, linear_b = lin.default()
 
     with params_column:
         if st.session_state.active_button == "linear":
-            linear_a = st.number_input("Введите значение a для линейной функции", value=2.0)
-            linear_b = st.number_input("Введите значение b для линейной функции", value=1.0)
+            if 'linear_params' not in st.session_state:
+                st.session_state.linear_params = {'a': 1.0, 'b': 0.0}
+                
+            linear_a = st.number_input("Введите значение a для линейной функции", value=st.session_state.linear_params['a'])
+            linear_b = st.number_input("Введите значение b для линейной функции", value=st.session_state.linear_params['b'])
             lin.params = [linear_a, linear_b] 
+            st.session_state.linear_params = {'a': linear_a, 'b': linear_b}
+            
         if st.session_state.active_button == "parabola":
-            parabola_a = st.number_input("Введите значение a для параболы", value=2.0)
-            parabola_b = st.number_input("Введите значение b для параболы", value=1.0)
-            parabola_c = st.number_input("Введите значение c для параболы", value=1.0)
-            par.params = [parabola_a, parabola_b,parabola_c] 
-    
+            if 'parabola_params' not in st.session_state:
+                st.session_state.parabola_params = {'a': 1.0, 'b': 0.0, 'c': 0.0}
+            
+            parabola_a = st.number_input("Введите значение a для параболы", value=st.session_state.parabola_params['a'])
+            parabola_b = st.number_input("Введите значение b для параболы", value=st.session_state.parabola_params['b'])
+            parabola_c = st.number_input("Введите значение c для параболы", value=st.session_state.parabola_params['c'])
+            par.params = [parabola_a, parabola_b, parabola_c] 
+            st.session_state.parabola_params = {'a': parabola_a, 'b': parabola_b, 'c': parabola_c}
 
     with plot_column:
         st.subheader("Линейная функция")
