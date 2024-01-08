@@ -17,6 +17,13 @@ def plot_parabola(ax, par):
     y = par.calc_p(x)
     ax.plot(x, y, label=f'Parabola: y = {a}x^2 + {b}x + {c}')
 
+def transfer(ax, lin, par):
+    x = np.linspace(-10, 10, 100)
+    # a, b = lin.params
+    y = lin.calc_l(x)
+    a, b, c = par.params 
+    z = par.calc_p(y)
+    ax.plot(y, z, label=f'Parabola: y = {a}x^2 + {b}x + {c}')
 
 # Основная часть приложения
 def main():
@@ -26,12 +33,13 @@ def main():
     lin = LinearFunk()
     par = Parabola()
 
-    st.session_state.active_button = st.session_state.get("active_button", None)  # Retrieve the active button from session state
+    st.session_state.active_button = st.session_state.get("active_button", None)
 
     with buttons_column:
         linear_button = st.button("Линейная функция", key="linear_button")
         parabola_button = st.button("Парабола", key="parabola_button")
         default_button = st.button("Сброс", key="default_button")
+        transfer_button = st.button("Передача", key="transfer_button")
        
     if linear_button and (st.session_state.active_button != "linear"):
         st.session_state.active_button = "linear"
@@ -40,7 +48,7 @@ def main():
         st.session_state.active_button = "parabola"
 
     if default_button:
-        st.session_state.active_button = None  # Reset active button
+        st.session_state.active_button = None
         linear_a, linear_b = lin.default()
 
     with params_column:
