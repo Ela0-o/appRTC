@@ -2,8 +2,6 @@ import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
 from FunkPack.function import Parabola, LinearFunk
-# lin = LinearFunk()
-# par = Parabola()
 
 # Инициализация st.session_state
 if 'linear_params' not in st.session_state:
@@ -18,7 +16,6 @@ if 'lin' not in st.session_state:
 
 if 'par' not in st.session_state:
     st.session_state.par = Parabola()
-
 
 # Функция для отрисовки графика линейной функции
 def plot_linear_function(ax, lin):
@@ -36,7 +33,6 @@ def plot_parabola(ax, par):
 
 def transfer(ax, lin, par):
     x = np.linspace(-10, 10, 100)
-    # a, b = lin.params
     y = lin.calc_l(x)
     a, b, c = par.params 
     z = par.calc_p(y)
@@ -46,11 +42,6 @@ def transfer(ax, lin, par):
 def main():
     # Определение колонок для размещения элементов
     params_column, plot_column, buttons_column= st.columns(3)
-
-    # lin = LinearFunk()
-    # par = Parabola()
-
-    # st.session_state.active_button = st.session_state.get("active_button", None)
 
     # Определение флага активной кнопки
     if 'active_button' not in st.session_state:
@@ -76,18 +67,12 @@ def main():
 
     with params_column:
         if st.session_state.active_button == "linear":
-            # if 'linear_params' not in st.session_state:
-            #     st.session_state.linear_params = {'a': 1.0, 'b': 0.0}
-                
             linear_a = st.number_input("Введите значение a для линейной функции", value=st.session_state.linear_params['a'])
             linear_b = st.number_input("Введите значение b для линейной функции", value=st.session_state.linear_params['b'])
             st.session_state.lin.params = [linear_a, linear_b] 
             st.session_state.linear_params = {'a': linear_a, 'b': linear_b}
             
         if st.session_state.active_button == "parabola":
-            # if 'parabola_params' not in st.session_state:
-            #     st.session_state.parabola_params = {'a': 1.0, 'b': 0.0, 'c': 0.0}
-            
             parabola_a = st.number_input("Введите значение a для параболы", value=st.session_state.parabola_params['a'])
             parabola_b = st.number_input("Введите значение b для параболы", value=st.session_state.parabola_params['b'])
             parabola_c = st.number_input("Введите значение c для параболы", value=st.session_state.parabola_params['c'])
@@ -109,6 +94,13 @@ def main():
         plt.legend()
         st.pyplot(fig2)
         st.write()
+        if transfer_button:
+            st.subheader("Передача")
+            fig3, ax3 = plt.subplots(figsize=(5, 3))
+            transfer(ax3, st.session_state.lin, st.session_state.par)
+            plt.legend()
+            st.pyplot(fig3)
+            st.write()
 
 if __name__ == "__main__":
     main()
