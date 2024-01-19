@@ -1,2 +1,2 @@
-pip install streamlit \n
+pip install streamlit  
 streamlit run rtc.py
